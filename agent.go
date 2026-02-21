@@ -42,6 +42,12 @@ type User struct {
 	LoginAttemptCount	int		`json:"LoginAttemptCount"`
 }
 
+type NewLocation struct {  
+    LocationTypeId  int         `json:"LocationTypeId"`
+    Longitude       float64     `json:"Longitude"`
+    Latitude        float64     `json:"Latitude"`
+}
+
 func NewLinkAgent(port, username, password string) *LinkAgent {
     return &LinkAgent{
         linkStorePort:  fmt.Sprintf(":%s", port),
@@ -157,6 +163,25 @@ func (this *LinkAgent) makeRequest(method string, url string, body []byte) ([]by
     return stringReturn, nil
 }
 
+func (this *LinkAgent) CreateLocationEntry(locationTypeId int, longitude, latitude float64) error {
+    bodyContent := &NewLocation{
+        LocationTypeId: locationTypeId,
+        Longitude:      longitude,
+        Latitude:       latitude,
+    }    
+
+    locationContent, err := json.Marshal(bodyContent)
+    if err != nil {
+        return err
+    }
+
+    _, err = this.makeRequest("POST", "Location", locationContent)
+    if err != nil {
+        return err
+    }
+
+    return nil
+}
 
 func (this *LinkAgent) GetAllUsersCount() (int, error) {
     bodyContent := &UserSearch{
@@ -166,7 +191,7 @@ func (this *LinkAgent) GetAllUsersCount() (int, error) {
         Active: "active",
     }
 
-    userContent, err := jsgn.Marshal(bodyContent)
+    userContent, err := json.Marshal(bodyContent)
     if err != nil {
         return 0, err
     }

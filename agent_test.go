@@ -29,3 +29,12 @@ func TestGetAllUsers(t *testing.T) {
         t.Error("The number of users is 0.")
     }
 }
+
+func TestCreateLocation(t *testing.T) {
+    linkAgent := setup()
+
+    err := linkAgent.CreateLocationEntry(1, 0.0000000000, 1.111111111111)
+    if err != nil {
+        t.Fatal(err)
+    }
+}
