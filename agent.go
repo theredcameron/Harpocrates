@@ -48,11 +48,17 @@ type NewLocation struct {
     Latitude        float64     `json:"Latitude"`
 }
 
-func NewLinkAgent(port, username, password string) *LinkAgent {
+type LinkAgentConfig struct {
+    LinkStorePort   string      `json:"LinkStorePort"`
+    UserName        string      `json:"UserName"`
+    Password        string      `json:"Password"`
+}
+
+func NewLinkAgent(config LinkAgentConfig) *LinkAgent {
     return &LinkAgent{
-        linkStorePort:  fmt.Sprintf(":%s", port),
-        userName:       username,
-        password:       password,
+        linkStorePort:  fmt.Sprintf(":%s", config.LinkStorePort),
+        userName:       config.UserName,
+        password:       config.Password,
     }
 }
 
