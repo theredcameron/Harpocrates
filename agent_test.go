@@ -12,7 +12,13 @@ var port     = flag.String("port", "", "Port number")
 func setup() *LinkAgent {
     flag.Parse()
 
-    linkAgent := NewLinkAgent(*port, *username, *password)
+    config := LinkAgentConfig{
+        LinkStorePort: *port,
+        UserName: *username,
+        Password: *password,
+    }
+
+    linkAgent := NewLinkAgent(config)
 
     return linkAgent
 }
